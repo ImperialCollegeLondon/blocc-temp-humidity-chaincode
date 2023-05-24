@@ -1,0 +1,2 @@
+rootProject.name = System.getenv('CHAINCODE_NAME') ?: 'blocc-chaincode'
+
