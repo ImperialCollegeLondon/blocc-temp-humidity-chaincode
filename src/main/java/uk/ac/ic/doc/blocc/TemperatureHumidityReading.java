@@ -7,7 +7,7 @@ import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 
 @DataType()
-public class Measurement {
+public class TemperatureHumidityReading {
 
   @Property() private final float temperature;
 
@@ -15,7 +15,7 @@ public class Measurement {
 
   @Property() private final Instant time;
 
-  public Measurement(
+  public TemperatureHumidityReading(
       @JsonProperty("temperature") final float temperature,
       @JsonProperty("relativeHumidity") final float relativeHumidity,
       @JsonProperty("measureTime") final long timeEpochSeconds) {
@@ -50,7 +50,7 @@ public class Measurement {
       return false;
     }
 
-    Measurement that = (Measurement) obj;
+    TemperatureHumidityReading that = (TemperatureHumidityReading) obj;
 
     return this.getTime() == that.getTime()
         && this.getTemperature() == that.getTemperature()
