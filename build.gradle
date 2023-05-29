@@ -62,6 +62,16 @@ tasks.register('installLocalGitHook', Copy) {
     fileMode 0775
 }
 
+shadowJar {
+    archiveBaseName.set('chaincode')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+
+    manifest {
+        attributes 'Main-Class': 'org.hyperledger.fabric.contract.ContractRouter'
+    }
+}
+
 check.dependsOn jacocoTestCoverageVerification
 installDist.dependsOn check
 build.dependsOn installLocalGitHook
