@@ -43,7 +43,7 @@ class TemperatureHumidityReadingContractTest {
       // A reading at epoch 0L exists in the ledger
       String existedReading =
           String.format(
-              "{ \"temperature\": \"%f\", \"time\": \"%s\", \"humidity\": %f }",
+              "{ \"temperature\": %f, \"time\": \"%s\", \"relativeHumidity\": %f }",
               0.1f, Instant.ofEpochSecond(0L), 0.9f);
       when(stub.getStringState(String.valueOf(0L))).thenReturn(existedReading);
 
