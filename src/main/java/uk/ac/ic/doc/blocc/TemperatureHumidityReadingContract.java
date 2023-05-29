@@ -1,10 +1,7 @@
 package uk.ac.ic.doc.blocc;
 
-import com.owlike.genson.Converter;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
-import com.owlike.genson.stream.ObjectReader;
-import com.owlike.genson.stream.ObjectWriter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +30,7 @@ public class TemperatureHumidityReadingContract {
 
   // Build a Genson that can serialize/deserialize Instant to/from long (epoch)
   private final Genson genson =
-      new GensonBuilder()
-          .withConverter(
-              new Converter<>() {
-                @Override
-                public void serialize(
-                    Instant object, ObjectWriter writer, com.owlike.genson.Context ctx) {
-                  writer.writeValue(object.getEpochSecond());
-                }
-
-                @Override
-                public Instant deserialize(ObjectReader reader, com.owlike.genson.Context ctx) {
-                  return Instant.ofEpochSecond(reader.valueAsLong());
-                }
-              },
-              Instant.class)
-          .create();
+      new GensonBuilder().withConverter(new InstantConverter(), Instant.class).create();
 
   private enum Errors {
     READING_NOT_FOUND,
