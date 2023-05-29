@@ -45,7 +45,7 @@ class TemperatureHumidityReadingTest {
   }
 
   @Test
-  public void toStringIdentifiesAsset() {
+  public void toStringIdentifiesReading() {
     assertThat(reading1.toString())
         .isEqualTo(
             "TemperatureHumidityReading@efd25fe4 [time=1970-01-01T00:00:00Z, temperature=1.000000, relativeHumidity=0.820000]");
