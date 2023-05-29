@@ -38,12 +38,23 @@ public class TemperatureHumidityReadingContract {
     return (readingJson != null && !readingJson.isEmpty());
   }
 
+  /**
+   * Record a temperature and humidity reading to the ledger.
+   *
+   * @param ctx the transaction ledger
+   * @param temperature the temperature reading in degree celsius
+   * @param relativeHumidity the relative humidity reading in percentage
+   * @param timeEpochSeconds timestamp of the reading
+   * @return the {@code TemperatureHumidityReading} added to ledger
+   * @throws ChaincodeException when a reading at the same {@code timeEpochSeconds} exists already
+   */
   @Transaction(intent = TYPE.SUBMIT)
   public TemperatureHumidityReading addReading(
       final Context ctx,
       final float temperature,
       final float relativeHumidity,
-      final long timeEpochSeconds) {
+      final long timeEpochSeconds)
+      throws ChaincodeException {
     ChaincodeStub stub = ctx.getStub();
 
     if (readingExists(ctx, timeEpochSeconds)) {
