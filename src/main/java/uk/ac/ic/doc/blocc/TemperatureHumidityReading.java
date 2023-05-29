@@ -18,7 +18,7 @@ public class TemperatureHumidityReading {
   public TemperatureHumidityReading(
       @JsonProperty("temperature") final float temperature,
       @JsonProperty("relativeHumidity") final float relativeHumidity,
-      @JsonProperty("measureTime") final long timeEpochSeconds) {
+      @JsonProperty("time") final long timeEpochSeconds) {
     this.temperature = temperature;
     this.relativeHumidity = relativeHumidity;
     this.time = Instant.ofEpochSecond(timeEpochSeconds);
@@ -52,7 +52,7 @@ public class TemperatureHumidityReading {
 
     TemperatureHumidityReading that = (TemperatureHumidityReading) obj;
 
-    return this.getTime() == that.getTime()
+    return this.getTime().equals(that.getTime())
         && this.getTemperature() == that.getTemperature()
         && this.getRelativeHumidity() == that.getRelativeHumidity();
   }
@@ -65,11 +65,7 @@ public class TemperatureHumidityReading {
   @Override
   public String toString() {
     return String.format(
-        "%s@%s [time=%s, temperature=%f, relativeHumidity=%f]",
-        getClass().getSimpleName(),
-        Integer.toHexString(hashCode()),
-        time,
-        temperature,
-        relativeHumidity);
+        "%s [time=%s, temperature=%f, relativeHumidity=%f]",
+        getClass().getSimpleName(), time, temperature, relativeHumidity);
   }
 }

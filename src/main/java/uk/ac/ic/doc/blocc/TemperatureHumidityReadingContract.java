@@ -6,6 +6,8 @@ import com.owlike.genson.GensonBuilder;
 import com.owlike.genson.stream.ObjectReader;
 import com.owlike.genson.stream.ObjectWriter;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contact;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -15,6 +17,8 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.contract.annotation.Transaction.TYPE;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 @Contract(
     name = "blocc-temp-humidity-reading",
@@ -118,5 +122,23 @@ public class TemperatureHumidityReadingContract {
     }
 
     return genson.deserialize(readingJson, TemperatureHumidityReading.class);
+  }
+
+  public Iterable<TemperatureHumidityReading> getAllReadings(Context ctx) {
+    ChaincodeStub stub = ctx.getStub();
+
+    List<TemperatureHumidityReading> allReadings = new ArrayList<>();
+
+    // Get all readings
+    QueryResultsIterator<KeyValue> results = stub.getStateByRange("", "");
+
+    for (KeyValue result : results) {
+      TemperatureHumidityReading reading =
+          genson.deserialize(result.getStringValue(), TemperatureHumidityReading.class);
+      System.out.println(reading);
+      allReadings.add(reading);
+    }
+
+    return allReadings;
   }
 }
