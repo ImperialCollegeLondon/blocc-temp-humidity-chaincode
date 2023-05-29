@@ -26,6 +26,7 @@ public class TemperatureHumidityReadingContract {
   private final Genson genson = new Genson();
 
   private enum Errors {
+    READING_NOT_FOUND,
     READING_ALREADY_EXISTS
   }
 
@@ -62,5 +63,28 @@ public class TemperatureHumidityReadingContract {
     stub.putStringState(String.valueOf(timeEpochSeconds), sortedJson);
 
     return reading;
+  }
+
+  /**
+   * Retrieve the reading at a given time epoch second
+   *
+   * @param ctx the transaction context
+   * @param timeEpochSeconds a given time epoch second
+   * @return the retrieved {@code TemperatureHumidityReading}
+   * @throws ChaincodeException when reading at the given time is not found
+   */
+  public TemperatureHumidityReading getReading(Context ctx, long timeEpochSeconds)
+      throws ChaincodeException {
+    ChaincodeStub stub = ctx.getStub();
+    String readingJson = stub.getStringState(String.valueOf(timeEpochSeconds));
+
+    if (readingJson == null || readingJson.isEmpty()) {
+      String errorMessage =
+          String.format("Reading at %s is not found", Instant.ofEpochSecond(timeEpochSeconds));
+      System.out.println(errorMessage);
+      throw new ChaincodeException(errorMessage, Errors.READING_NOT_FOUND.toString());
+    }
+
+    return genson.deserialize(readingJson, TemperatureHumidityReading.class);
   }
 }

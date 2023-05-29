@@ -55,4 +55,35 @@ class TemperatureHumidityReadingContractTest {
           .isEqualTo("READING_ALREADY_EXISTS".getBytes());
     }
   }
+
+  @Nested
+  class InvokeGetReadingTransaction {
+
+    @Test
+    public void throwsWhenReadingNotFound() {
+      // No reading at epoch 0L exists in the ledger
+      when(stub.getStringState(String.valueOf(0L))).thenReturn("");
+
+      Throwable thrown = catchThrowable(() -> contract.getReading(ctx, 0L));
+
+      String msg = String.format("Reading at %s is not found", Instant.ofEpochSecond(0L));
+      assertThat(thrown).isInstanceOf(ChaincodeException.class).hasNoCause().hasMessage(msg);
+      assertThat(((ChaincodeException) thrown).getPayload())
+          .isEqualTo("READING_NOT_FOUND".getBytes());
+    }
+
+    @Test
+    public void retrievesExistingReading() {
+      // A reading at epoch 0L exists in the ledger
+      String existedReading =
+          String.format(
+              "{ \"temperature\": %f, \"time\": \"%s\", \"relativeHumidity\": %f }",
+              0.1f, Instant.ofEpochSecond(0L), 0.9f);
+      when(stub.getStringState(String.valueOf(0L))).thenReturn(existedReading);
+
+      TemperatureHumidityReading reading = contract.getReading(ctx, 0L);
+
+      assertThat(reading).isEqualTo(new TemperatureHumidityReading(0.1f, 0.9f, 0L));
+    }
+  }
 }
