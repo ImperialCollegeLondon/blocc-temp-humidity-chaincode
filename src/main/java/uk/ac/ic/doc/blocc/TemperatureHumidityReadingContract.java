@@ -1,6 +1,10 @@
 package uk.ac.ic.doc.blocc;
 
+import com.owlike.genson.Converter;
 import com.owlike.genson.Genson;
+import com.owlike.genson.GensonBuilder;
+import com.owlike.genson.stream.ObjectReader;
+import com.owlike.genson.stream.ObjectWriter;
 import java.time.Instant;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contact;
@@ -23,7 +27,24 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 @Default
 public class TemperatureHumidityReadingContract {
 
-  private final Genson genson = new Genson();
+  // Build a Genson that can serialize/deserialize Instant to/from long (epoch)
+  private final Genson genson =
+      new GensonBuilder()
+          .withConverter(
+              new Converter<>() {
+                @Override
+                public void serialize(
+                    Instant object, ObjectWriter writer, com.owlike.genson.Context ctx) {
+                  writer.writeValue(object.getEpochSecond());
+                }
+
+                @Override
+                public Instant deserialize(ObjectReader reader, com.owlike.genson.Context ctx) {
+                  return Instant.ofEpochSecond(reader.valueAsLong());
+                }
+              },
+              Instant.class)
+          .create();
 
   private enum Errors {
     READING_NOT_FOUND,
