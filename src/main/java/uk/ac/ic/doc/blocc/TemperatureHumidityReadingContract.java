@@ -1,7 +1,6 @@
 package uk.ac.ic.doc.blocc;
 
 import com.owlike.genson.Genson;
-import com.owlike.genson.GensonBuilder;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 public class TemperatureHumidityReadingContract {
 
   // Build a Genson that can serialize/deserialize Instant to/from long (epoch)
-  private final Genson genson =
-      new GensonBuilder().withConverter(new InstantConverter(), Instant.class).create();
+  private final Genson genson = new Genson();
 
   private enum Errors {
     READING_NOT_FOUND,

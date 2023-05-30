@@ -3,8 +3,6 @@ package uk.ac.ic.doc.blocc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.owlike.genson.Genson;
-import com.owlike.genson.GensonBuilder;
-import java.time.Instant;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -60,8 +58,7 @@ class TemperatureHumidityReadingTest {
         String.format(
             "{ \"temperature\": %f, \"timestamp\": \"%s\", \"relativeHumidity\": %f }",
             1f, 1L, 0.82f);
-    Genson genson =
-        new GensonBuilder().withConverter(new InstantConverter(), Instant.class).create();
+    Genson genson = new Genson();
 
     assertThat(reading1)
         .isEqualTo(genson.deserialize(readingJson, TemperatureHumidityReading.class));
