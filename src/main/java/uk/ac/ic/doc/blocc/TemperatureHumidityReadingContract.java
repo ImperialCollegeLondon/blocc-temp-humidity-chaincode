@@ -105,8 +105,14 @@ public class TemperatureHumidityReadingContract {
     return genson.deserialize(readingJson, TemperatureHumidityReading.class);
   }
 
+  /**
+   * Retrieve all existing readings from the ledger.
+   *
+   * @param ctx the transaction context
+   * @return an array of {@code TemperatureHumidityReading} in JSON string
+   */
   @Transaction(intent = Transaction.TYPE.EVALUATE)
-  public Iterable<TemperatureHumidityReading> getAllReadings(Context ctx) {
+  public String getAllReadings(Context ctx) {
     ChaincodeStub stub = ctx.getStub();
 
     List<TemperatureHumidityReading> allReadings = new ArrayList<>();
@@ -121,6 +127,6 @@ public class TemperatureHumidityReadingContract {
       allReadings.add(reading);
     }
 
-    return allReadings;
+    return genson.serialize(allReadings);
   }
 }

@@ -2,10 +2,10 @@ package uk.ac.ic.doc.blocc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.owlike.genson.Genson;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -147,9 +147,9 @@ class TemperatureHumidityReadingContractTest {
     public void returnsEmptyIterableWhenNoReadingAvailable() {
       when(stub.getStateByRange("", "")).thenReturn(mockedResults);
 
-      Iterable<TemperatureHumidityReading> reading = contract.getAllReadings(ctx);
+      String reading = contract.getAllReadings(ctx);
 
-      assertThat(reading).isEmpty();
+      assertThat(reading).isEqualTo("[]");
     }
 
     @Test
@@ -164,14 +164,14 @@ class TemperatureHumidityReadingContractTest {
 
       when(stub.getStateByRange("", "")).thenReturn(mockedResults);
 
-      Iterable<TemperatureHumidityReading> actualReadings = contract.getAllReadings(ctx);
+      String actualReadings = contract.getAllReadings(ctx);
 
       List<TemperatureHumidityReading> expectedReadings = new ArrayList<>();
 
       expectedReadings.add(new TemperatureHumidityReading(0.1f, 0.9f, 1L));
       expectedReadings.add(new TemperatureHumidityReading(20f, 4f, 100L));
 
-      assertIterableEquals(actualReadings, expectedReadings);
+      assertThat(actualReadings).isEqualTo(new Genson().serialize(expectedReadings));
     }
   }
 }
