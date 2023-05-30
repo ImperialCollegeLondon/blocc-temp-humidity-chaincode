@@ -28,7 +28,6 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 @Default
 public class TemperatureHumidityReadingContract implements ContractInterface {
 
-  // Build a Genson that can serialize/deserialize Instant to/from long (epoch)
   private final Genson genson = new Genson();
 
   private enum Errors {
@@ -73,7 +72,7 @@ public class TemperatureHumidityReadingContract implements ContractInterface {
     TemperatureHumidityReading reading =
         new TemperatureHumidityReading(temperature, relativeHumidity, timeEpochSeconds);
 
-    // Use Genson to convert the Measurement into string, sort it alphabetically and serialise it
+    // Use Genson to convert the Reading into string, sort it alphabetically and serialise it
     // into a JSON string
     String sortedJson = genson.serialize(reading);
     // Use timestamp as the unique identifier since there should only be one measurement at a second
