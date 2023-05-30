@@ -89,6 +89,7 @@ public class TemperatureHumidityReadingContract {
    * @return the retrieved {@code TemperatureHumidityReading}
    * @throws ChaincodeException when reading at the given time is not found
    */
+  @Transaction(intent = Transaction.TYPE.EVALUATE)
   public TemperatureHumidityReading getReading(Context ctx, long timeEpochSeconds)
       throws ChaincodeException {
     ChaincodeStub stub = ctx.getStub();
@@ -104,6 +105,7 @@ public class TemperatureHumidityReadingContract {
     return genson.deserialize(readingJson, TemperatureHumidityReading.class);
   }
 
+  @Transaction(intent = Transaction.TYPE.EVALUATE)
   public Iterable<TemperatureHumidityReading> getAllReadings(Context ctx) {
     ChaincodeStub stub = ctx.getStub();
 
