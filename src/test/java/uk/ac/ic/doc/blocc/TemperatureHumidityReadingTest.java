@@ -51,14 +51,15 @@ class TemperatureHumidityReadingTest {
   public void toStringIdentifiesReading() {
     assertThat(reading1.toString())
         .isEqualTo(
-            "TemperatureHumidityReading [time=1970-01-01T00:00:01Z, temperature=1.000000, relativeHumidity=0.820000]");
+            "TemperatureHumidityReading [timestamp=1970-01-01T00:00:01Z, temperature=1.000000, relativeHumidity=0.820000]");
   }
 
   @Test
   public void validJsonStringDeserializesToReading() {
     String readingJson =
         String.format(
-            "{ \"temperature\": %f, \"time\": \"%s\", \"relativeHumidity\": %f }", 1f, 1L, 0.82f);
+            "{ \"temperature\": %f, \"timestamp\": \"%s\", \"relativeHumidity\": %f }",
+            1f, 1L, 0.82f);
     Genson genson =
         new GensonBuilder().withConverter(new InstantConverter(), Instant.class).create();
 

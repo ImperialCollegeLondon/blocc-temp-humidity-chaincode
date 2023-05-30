@@ -28,7 +28,8 @@ class TemperatureHumidityReadingContractTest {
   private final ChaincodeStub stub = mock(ChaincodeStub.class);
   private final String existedReading =
       String.format(
-          "{ \"temperature\": %f, \"time\": \"%s\", \"relativeHumidity\": %f }", 0.1f, 1L, 0.9f);
+          "{ \"temperature\": %f, \"timestamp\": \"%s\", \"relativeHumidity\": %f }",
+          0.1f, 1L, 0.9f);
 
   @BeforeEach
   public void setUp() {
@@ -155,7 +156,8 @@ class TemperatureHumidityReadingContractTest {
     public void retrievesAllExistingReadings() {
       String anotherReading =
           String.format(
-              "{ \"temperature\": %f, \"time\": \"%s\", \"relativeHumidity\": %f }", 20f, 100L, 4f);
+              "{ \"temperature\": %f, \"timestamp\": \"%s\", \"relativeHumidity\": %f }",
+              20f, 100L, 4f);
 
       mockedResults.add(String.valueOf(1L), existedReading);
       mockedResults.add(String.valueOf(100L), anotherReading);

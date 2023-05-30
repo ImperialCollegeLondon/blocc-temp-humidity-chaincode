@@ -13,15 +13,22 @@ public class TemperatureHumidityReading {
 
   @Property() private final float relativeHumidity;
 
-  @Property() private final Instant time;
+  @Property() private final long timestamp;
 
+  /**
+   * A reading taken from a temperature and humidity sensor.
+   *
+   * @param temperature temperature in degree celsius
+   * @param relativeHumidity relative humidity in percentage
+   * @param timestamp timestamp in epoch seconds
+   */
   public TemperatureHumidityReading(
       @JsonProperty("temperature") final float temperature,
       @JsonProperty("relativeHumidity") final float relativeHumidity,
-      @JsonProperty("time") final long timeEpochSeconds) {
+      @JsonProperty("timestamp") final long timestamp) {
     this.temperature = temperature;
     this.relativeHumidity = relativeHumidity;
-    this.time = Instant.ofEpochSecond(timeEpochSeconds);
+    this.timestamp = timestamp;
   }
 
   public float getTemperature() {
@@ -32,8 +39,8 @@ public class TemperatureHumidityReading {
     return relativeHumidity;
   }
 
-  public Instant getTime() {
-    return time;
+  public long getTimestamp() {
+    return timestamp;
   }
 
   @Override
@@ -52,20 +59,23 @@ public class TemperatureHumidityReading {
 
     TemperatureHumidityReading that = (TemperatureHumidityReading) obj;
 
-    return this.getTime().equals(that.getTime())
+    return this.getTimestamp() == that.getTimestamp()
         && this.getTemperature() == that.getTemperature()
         && this.getRelativeHumidity() == that.getRelativeHumidity();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getTime(), getTemperature(), getRelativeHumidity());
+    return Objects.hash(getTimestamp(), getTemperature(), getRelativeHumidity());
   }
 
   @Override
   public String toString() {
     return String.format(
-        "%s [time=%s, temperature=%f, relativeHumidity=%f]",
-        getClass().getSimpleName(), time, temperature, relativeHumidity);
+        "%s [timestamp=%s, temperature=%f, relativeHumidity=%f]",
+        getClass().getSimpleName(),
+        Instant.ofEpochSecond(timestamp),
+        temperature,
+        relativeHumidity);
   }
 }
