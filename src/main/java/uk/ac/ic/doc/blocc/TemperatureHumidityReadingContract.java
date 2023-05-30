@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contact;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
@@ -25,7 +26,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
                 "A smart contract to record the temperature and humidity sensor reading taken at nodes",
             contact = @Contact(email = "tony.wu122@imperial.ac.uk", name = "Tony Wu")))
 @Default
-public class TemperatureHumidityReadingContract {
+public class TemperatureHumidityReadingContract implements ContractInterface {
 
   // Build a Genson that can serialize/deserialize Instant to/from long (epoch)
   private final Genson genson = new Genson();
