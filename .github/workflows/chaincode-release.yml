@@ -29,7 +29,7 @@ jobs:
         ./install-fabric.sh binary
 
     - name: Package Chaincode
-      run: peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ./build/install/${CC_NAME} --lang java --label ${CC_NAME}
+      run: ./bin/peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ./build/install/${CC_NAME} --lang java --label ${CC_NAME}
       env:
         FABRIC_CFG_PATH: ./config
         CC_NAME: blocc-temp-humidity-reading
