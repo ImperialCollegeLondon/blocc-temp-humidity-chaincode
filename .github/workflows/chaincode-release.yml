@@ -37,4 +37,6 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: blocc-temp-humidity-reading.tar.gz    
+        artifacts: blocc-temp-humidity-reading.tar.gz
+        commit: master
+        tag: packaged
