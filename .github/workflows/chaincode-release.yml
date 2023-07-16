@@ -1,0 +1,40 @@
+name: Build Chaincode and Release Package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Build Chaincode with Gradle
+      run: ./gradlew installDist
+        
+    - name: Install Hyperledger Fabric dependencies
+      run: |
+        curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+        ./install-fabric.sh binary
+
+    - name: Package Chaincode
+      run: peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ./build/install/${CC_NAME} --lang java --label ${CC_NAME}
+      env:
+        FABRIC_CFG_PATH: ./config
+        CC_NAME: blocc-temp-humidity-reading
+    
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: blocc-temp-humidity-reading.tar.gz    
