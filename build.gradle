@@ -80,4 +80,3 @@ shadowJar {
 
 check.dependsOn jacocoTestCoverageVerification
 installDist.dependsOn check
-build.dependsOn installLocalGitHook
