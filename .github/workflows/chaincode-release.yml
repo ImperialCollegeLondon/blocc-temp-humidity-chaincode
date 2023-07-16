@@ -42,4 +42,5 @@ jobs:
         artifacts: blocc-temp-humidity-reading.tar.gz
         commit: master
         name: Packaged chaincode
+        allowUpdates: true
         tag: packaged
