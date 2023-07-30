@@ -34,12 +34,12 @@ jobs:
         run: ./bin/peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ./build/install/blocc-temp-humidity-reading --lang java --label ${CC_NAME}
         env:
           FABRIC_CFG_PATH: ./config
-          CC_NAME: sensory_chaincode
+          CC_NAME: sensor_chaincode
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: sensory_chaincode.tar.gz
+          artifacts: sensor_chaincode.tar.gz
           commit: blocc
           name: Packaged BLOCC test chaincode
           allowUpdates: true
