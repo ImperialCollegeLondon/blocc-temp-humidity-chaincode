@@ -1,2 +1,2 @@
-rootProject.name = System.getenv('CHAINCODE_NAME') ?: 'blocc-temp-humidity-reading'
+rootProject.name = System.getenv('CHAINCODE_NAME') ?: 'sensor_chaincode'
 
